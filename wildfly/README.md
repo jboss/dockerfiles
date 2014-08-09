@@ -18,6 +18,10 @@ Get the image IP address, for example:
 
 `boot2docker ip` or `docker inspect IMAGENAME | grep -i IPAdr`
 
+Run:
+
+`docker run -it -p 8080:8080 -p 8443:8443 jboss/wildfly`
+
 Access it:
 
 - HTTP
