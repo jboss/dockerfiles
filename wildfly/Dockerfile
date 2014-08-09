@@ -27,12 +27,15 @@ RUN ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly && chown -R wildfly:wildfly
 # Set the JBOSS_HOME env variable
 ENV JBOSS_HOME /opt/wildfly
 
-# Disable requiretty to prevent Node.js sessions hangup
+# Disable requiretty
 RUN sed -i 's/.*requiretty$/#Defaults requiretty/' /etc/sudoers
 
 
-# Allows aerogear user to run keytool and yum with sudo
-RUN echo "aerogear ALL=NOPASSWD:/usr/bin/keytool" >> /etc/sudoers
+# Allows wildfly user to run keytool and yum with sudo
+RUN echo "wildfly ALL=NOPASSWD:/usr/bin/keytool" >> /etc/sudoers
+# WildFly configuration file ready for HTTPS
+ADD configuration/xml/standalone-sample.xml $JBOSS_HOME/standalone/configuration/standalone.xml
+
 # Add the certificate.sh script into $JBOSS_HOME/standalone/configuration/certs
 ADD configuration/certs/ $JBOSS_HOME/standalone/configuration/certs
 
@@ -42,7 +45,7 @@ WORKDIR /opt/wildfly/standalone/configuration/certs
 # Execute the script to generate self signed certificates
 RUN ./certificate.sh
 
-# Switch to the working dir /opt/aerogear
+# Switch to the working dir /opt/wildfly
 WORKDIR /opt/wildfly
 
 # Expose the ports we're interested in
