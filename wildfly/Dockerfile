@@ -27,6 +27,12 @@ RUN ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly && chown -R wildfly:wildfly
 # Set the JBOSS_HOME env variable
 ENV JBOSS_HOME /opt/wildfly
 
+# Disable requiretty to prevent Node.js sessions hangup
+RUN sed -i 's/.*requiretty$/#Defaults requiretty/' /etc/sudoers
+
+
+# Allows aerogear user to run keytool and yum with sudo
+RUN echo "aerogear ALL=NOPASSWD:/usr/bin/keytool" >> /etc/sudoers
 # Add the certificate.sh script into $JBOSS_HOME/standalone/configuration/certs
 ADD configuration/certs/ $JBOSS_HOME/standalone/configuration/certs
 
