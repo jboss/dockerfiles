@@ -12,6 +12,24 @@ To boot in domain mode
 
     docker run -it jboss/wildfly /opt/wildfly/bin/domain.sh -b 0.0.0.0 -bmanagement 0.0.0.0
 
+### Acessing Wildfly
+
+Get the image IP address, for example:
+
+`boot2docker ip` or `docker inspect IMAGENAME | grep -i IPAdr`
+
+Access it:
+
+- HTTP
+
+`https://myip:8080/`
+
+- HTTPS
+
+`https://myip:8443/`
+
+*Note*: The SSL certificate is automatically generated and self-signed
+
 ## Application deployment
 
 With the WildFly server you can [deploy your application in multiple ways](https://docs.jboss.org/author/display/WFLY8/Application+deployment):
@@ -25,7 +43,7 @@ The most popular way of deploying an application is using the deployment scanner
 
 The simplest and cleanest way to deploy an application to WildFly running in a container started from the `jboss/wildfly` image is to use the deployment scanner method mentioned above.
 
-To do this you just need to extend the `jboss/wildfly` image by creating a new one. Place your application inside the `deployments/` directory with the `ADD` command (but make sure to include the trailing slash on the deployment folder path, [more info](https://docs.docker.com/reference/builder/#add)). You can also do the changes to the configuration (if any) as additional steps (`RUN` command).  
+To do this you just need to extend the `jboss/wildfly` image by creating a new one. Place your application inside the `deployments/` directory with the `ADD` command (but make sure to include the trailing slash on the deployment folder path, [more info](https://docs.docker.com/reference/builder/#add)). You can also do the changes to the configuration (if any) as additional steps (`RUN` command).
 
 [A simple example](https://github.com/goldmann/wildfly-docker-deployment-example) was prepared to show how to do it, but the steps are following:
 
