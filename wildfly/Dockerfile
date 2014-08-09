@@ -27,8 +27,20 @@ RUN ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly && chown -R wildfly:wildfly
 # Set the JBOSS_HOME env variable
 ENV JBOSS_HOME /opt/wildfly
 
+# Add the certificate.sh script into $JBOSS_HOME/standalone/configuration/certs
+ADD configuration/certs/ $JBOSS_HOME/standalone/configuration/certs
+
+# Switch to $JBOSS_HOME/configuration/certs
+WORKDIR /opt/wildfly/standalone/configuration/certs
+
+# Execute the script to generate self signed certificates
+RUN ./certificate.sh
+
+# Switch to the working dir /opt/aerogear
+WORKDIR /opt/wildfly
+
 # Expose the ports we're interested in
-EXPOSE 8080 9990
+EXPOSE 8080 8443 9990
 
 # Run everything below as the wildfly user
 USER wildfly
