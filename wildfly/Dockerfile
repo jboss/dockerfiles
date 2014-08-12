@@ -39,11 +39,8 @@ ADD configuration/xml/standalone-sample.xml $JBOSS_HOME/standalone/configuration
 # Add the certificate.sh script into $JBOSS_HOME/standalone/configuration/certs
 ADD configuration/certs/ $JBOSS_HOME/standalone/configuration/certs
 
-# Switch to $JBOSS_HOME/configuration/certs
-WORKDIR /opt/wildfly/standalone/configuration/certs
-
-# Execute the script to generate self signed certificates
-RUN ./certificate.sh
+# Add the launch script which will be used as the entry point
+ADD launch.sh /opt/wildfly/bin/
 
 # Switch to the working dir /opt/wildfly
 WORKDIR /opt/wildfly
@@ -56,4 +53,4 @@ USER wildfly
 
 # Set the default command to run on boot
 # This will boot WildFly in the standalone mode and bind to all interface
-CMD ["/opt/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
+CMD ["/opt/wildfly/bin/launch.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
