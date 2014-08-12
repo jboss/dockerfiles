@@ -3,18 +3,18 @@
 if [ $# -lt 1 ]; then
   echo "Usage: $0 <configuration> [options]"
   echo
-  echo "Launches JBoss EAP in the selected configuration with specified options (if any)"
+  echo "Launches Wildfly in the selected configuration with specified options (if any)"
   echo
   echo "<configuration>  - standalone or domain"
   echo "[options]        - options accepted by the standalone/domain.sh scripts"
   echo
   echo "Examples:"
   echo
-  echo "*  To run JBoss EAP in standalone mode with default options:"
+  echo "*  To run Wildfly in standalone mode with default options:"
   echo
   echo "   $0 standalone"
   echo
-  echo "*  To run JBoss EAP in standalone mode with custom options:"
+  echo "*  To run Wildfly in standalone mode with custom options:"
   echo
   echo "   $0 standalone -b 0.0.0.0"
   exit 1
@@ -27,7 +27,15 @@ else
   exit 1
 fi
 
-JBOSS_HOME=/opt/jboss-eap
+if [ "$1" = "standalone" ] && [ -z "$SELF_SIGNED_CERTIFICATE" ]; then
+  mkdir -p $CONFIGURATION/configuration/certificate
+  $JBOSS_HOME/bin/self-signed-certificate.sh $CONFIGURATION/configuration/certificate
+  cp $CONFIGURATION/configuration/standalone.xml $CONFIGURATION/configuration/standalone.xml.orig
+
+fi
+
+
+JBOSS_HOME=/opt/wildfly
 
 shift 1
 

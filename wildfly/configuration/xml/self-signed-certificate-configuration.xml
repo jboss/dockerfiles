@@ -49,7 +49,7 @@
 	          <security-realm name="WildFlyRealm">
                 <server-identities>
                     <ssl>
-                        <keystore path="certs/server.wildfly.dev.keystore" relative-to="jboss.server.config.dir" keystore-password="weak42" alias="server.wildfly.dev"/>
+                        <keystore path="certificate/server.wildfly.dev.keystore" relative-to="jboss.server.config.dir" keystore-password="weak42" alias="server.wildfly.dev"/>
                     </ssl>
                 </server-identities>
             </security-realm>

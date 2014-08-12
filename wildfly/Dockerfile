@@ -34,10 +34,10 @@ RUN sed -i 's/.*requiretty$/#Defaults requiretty/' /etc/sudoers
 # Allows wildfly user to run keytool and yum with sudo
 RUN echo "wildfly ALL=NOPASSWD:/usr/bin/keytool" >> /etc/sudoers
 # WildFly configuration file ready for HTTPS
-ADD configuration/xml/standalone-sample.xml $JBOSS_HOME/standalone/configuration/standalone.xml
+ADD configuration/xml/self-signed-certificate-configuration.xml $JBOSS_HOME/standalone/configuration/self-signed-certificate-configuration.xml
 
-# Add the certificate.sh script into $JBOSS_HOME/standalone/configuration/certs
-ADD configuration/certs/ $JBOSS_HOME/standalone/configuration/certs
+# Add the certificate.sh script into $JBOSS_HOME/bin
+ADD configuration/script/ $JBOSS_HOME/bin
 
 # Add the launch script which will be used as the entry point
 ADD launch.sh /opt/wildfly/bin/
@@ -53,4 +53,4 @@ USER wildfly
 
 # Set the default command to run on boot
 # This will boot WildFly in the standalone mode and bind to all interface
-CMD ["/opt/wildfly/bin/launch.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
+CMD ["/opt/wildfly/bin/launch.sh", "standalone", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
