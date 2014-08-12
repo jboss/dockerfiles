@@ -1,6 +1,6 @@
 # JBoss AS7 Docker image
 
-This is an example Dockerfile with [JBoss AS7 application server](http://jboss.org/).
+This is an example Dockerfile with [JBoss AS7 application server](http://jbossas.jboss.org/).
 
 ## Usage
 
@@ -16,7 +16,7 @@ To boot in domain mode
 
 Get the image IP address, for example:
 
-`boot2docker ip` or `docker inspect IMAGENAME | grep -i IPAdr`
+`boot2docker ip` or `docker inspect -f '{{ .NetworkSettings.IPAddress }}' IMAGE_ID .`
 
 Run:
 
