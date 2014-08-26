@@ -12,27 +12,33 @@ To boot in domain mode
 
     docker run -it jboss/wildfly /opt/wildfly/bin/domain.sh -b 0.0.0.0 -bmanagement 0.0.0.0
 
-### Acessing Wildfly
+### Acessing WildFly
 
-Get the image IP address, for example:
+Get the container IP address, for example:
 
-`boot2docker ip` or `docker inspect IMAGENAME | grep -i IPAdr`
+`boot2docker ip` or `docker inspect -f '{{ .NetworkSettings.IPAddress }}' CONTAINER_ID`
+
+- HTTP
 
 Run:
 
-`docker run -it -p 8080:8080 -p 8443:8443 jboss/wildfly`
+`docker run -it -p 8080:8080 jboss/wildfly`
 
 Access it:
-
-- HTTP
 
 `https://myip:8080/`
 
 - HTTPS
 
+Run:
+
+`docker run -e SELF_SIGNED_CERTIFICATE -it -p 8443:8443 jboss/wildfly`
+
+Access it:
+
 `https://myip:8443/`
 
-*Note*: The SSL certificate is automatically generated and self-signed
+*Note*: if the environment variable is provided, the SSL certificate is automatically generated and self-signed.
 
 ## Application deployment
 
