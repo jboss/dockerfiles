@@ -28,8 +28,26 @@ RUN ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly && chown -R wildfly:wildfly
 # Set the JBOSS_HOME env variable
 ENV JBOSS_HOME /opt/wildfly
 
+# Disable requiretty
+RUN sed -i 's/.*requiretty$/#Defaults requiretty/' /etc/sudoers
+
+
+# Allows wildfly user to run keytool and yum with sudo
+RUN echo "wildfly ALL=NOPASSWD:/usr/bin/keytool" >> /etc/sudoers
+# WildFly configuration file ready for HTTPS
+ADD configuration/xml/self-signed-certificate-configuration.xml $JBOSS_HOME/standalone/configuration/self-signed-certificate-configuration.xml
+
+# Add the certificate.sh script into $JBOSS_HOME/bin
+ADD configuration/script/ $JBOSS_HOME/bin
+
+# Add the launch script which will be used as the entry point
+ADD launch.sh /opt/wildfly/bin/
+
+# Switch to the working dir /opt/wildfly
+WORKDIR /opt/wildfly
+
 # Expose the ports we're interested in
-EXPOSE 8080 9990
+EXPOSE 8080 8443 9990
 
 # Run everything below as the wildfly user
 USER wildfly
