@@ -12,6 +12,10 @@ RUN cd /tmp && \
     cp /tmp/keycloak-war-dist-all-$KEYCLOAK_VERSION/adapters/keycloak-wildfly-adapter-dist-$KEYCLOAK_VERSION.zip /opt/keycloak/keycloak-wildfly-adapter-dist-$KEYCLOAK_VERSION.zip && \
     cp -R /tmp/keycloak-war-dist-all-$KEYCLOAK_VERSION/deployments /opt/keycloak/ && \
     rm -rf /tmp/keycloak-war-dist-all-$KEYCLOAK_VERSION && chown wildfly:wildfly -R /opt/keycloak
+RUN mkdir -p /opt/wildfly/standalone/log
+RUN mkdir -p /opt/wildfly/standalone/data
+RUN chown wildfly /opt/wildfly/standalone/log
+RUN chown wildfly /opt/wildfly/standalone/data
 USER wildfly
 RUN cd /opt/wildfly && \
     unzip -q /opt/keycloak/keycloak-wildfly-adapter-dist-$KEYCLOAK_VERSION.zip
