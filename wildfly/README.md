@@ -10,7 +10,7 @@ To boot in standalone mode
 
 To boot in domain mode
 
-    docker run -it jboss/wildfly /opt/wildfly/bin/domain.sh -b 0.0.0.0 -bmanagement 0.0.0.0
+    docker run -it -e SERVER_MODE=domain jboss/wildfly 
 
 ## Application deployment
 
@@ -25,7 +25,13 @@ The most popular way of deploying an application is using the deployment scanner
 
 The simplest and cleanest way to deploy an application to WildFly running in a container started from the `jboss/wildfly` image is to use the deployment scanner method mentioned above.
 
-To do this you just need to extend the `jboss/wildfly` image by creating a new one. Place your application inside the `deployments/` directory with the `ADD` command (but make sure to include the trailing slash on the deployment folder path, [more info](https://docs.docker.com/reference/builder/#add)). You can also do the changes to the configuration (if any) as additional steps (`RUN` command).  
+To do this you have two options:
+1. Extend the `jboss/wildfly` image by creating a new one, placing your application inside the `deployments/` directory with the `ADD` command (but make sure to include the trailing slash on the deployment folder path, [more info](https://docs.docker.com/reference/builder/#add)). You can also do the changes to the configuration (if any) as additional steps (`RUN` command).  
+2. Place the server configuration and/or a deployments directory into the override directory (`-v /path/to/local/override:/opt/wildfly/override`). This override directory can contain any of the following:
+    - standalone/configuration/standalone.xml
+    - standalone/deployments/
+    - domain/configuration/domain.xml
+    - domain/deployments/
 
 [A simple example](https://github.com/goldmann/wildfly-docker-deployment-example) was prepared to show how to do it, but the steps are following:
 
